@@ -1,0 +1,576 @@
+openapi: 3.0.0
+info:
+  version: "alpha 1.0.0"
+  title: "ER TEST"
+  description: "....."
+
+servers:
+  - url: "http://localhost:4000/api/v1"
+paths:
+  /auth:
+    post:
+      summary: user authentification
+      description: sign in using a valide email and password.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Credentials"
+            example:
+              email: test@test.com
+              password: 12345678
+
+      responses:
+        "201":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Auth"
+              examples:
+                authorized:
+                  value:
+                    {
+                      "idToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlZGNkNzJhMTJkYjhiNGY2MDAyNmY5OCIsInJvbGVzIjpbImFkbWluIiwib3BlcmF0b3IiLCJtb25pdG9yIiwidXNlciIsInN1cGVyYWRtaW4iXSwiZW1haWwiOiJ5YXNzaW5lLmFpdHRhaGFyQGNldml0YWwuY29tIiwiZm5hbWUiOiJ5YXNzaW5lIiwibG5hbWUiOiJhaXR0YWhhciIsImlhdCI6MTU5NTQxMTQwNSwiZXhwIjoxNTk1ODQzNDA1fQ.qL2ZncT3Rf6vEE9WDzNH4KtbvgwlQ1vbpkZbB_Z1DY8",
+                      "timeStamp": 1595411405735,
+                      "idTokenExpiresIn": "2020-07-27T09:50:05.000Z",
+                    }
+
+        "400":
+          description: please provide a username and password
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: The user is not identified
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                unauthorized:
+                  value: { "code": 401, "message": "Unauthorized" }
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalError"
+  /users:
+    get:
+      security:
+        - bearerAuth: []
+      summary: get user
+      description: get the user from the JWT.
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                  buckets:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/UserPayload"
+              example:
+                code: 200
+                data:
+                  _id: 6122bc5ad3740600276188f5
+                  roles:
+                    - ADMIN
+                  contacts:
+                    - _id: 6122bc5ad3740600276188f4
+                      roles:
+                        - ADMIN
+                      contacts:
+                        - 6122bc5ad3740600276188f4
+                        - 6122bc5ad3740600276188f7
+                        - 6122bc5ad3740600276188f5
+                        - 6122bc5ad3740600276188f6
+                        - 6122bc5ad3740600276188f8
+                      name: yassine
+                      email: yassine@gmail.com
+                      phone: "213672055900"
+                      whatsapp: "213672055900"
+                    - _id: 6122bc5ad3740600276188f7
+                      roles:
+                        - ADMIN
+                      contacts:
+                        - 6122bc5ad3740600276188f4
+                        - 6122bc5ad3740600276188f7
+                        - 6122bc5ad3740600276188f5
+                        - 6122bc5ad3740600276188f6
+                        - 6122bc5ad3740600276188f8
+                      name: islam
+                      email: islam@gmail.com
+                      phone: "213672055900"
+                      whatsapp: "213672055900"
+                    - _id: 6122bc5ad3740600276188f5
+                      roles:
+                        - ADMIN
+                      contacts:
+                        - 6122bc5ad3740600276188f4
+                        - 6122bc5ad3740600276188f7
+                        - 6122bc5ad3740600276188f5
+                        - 6122bc5ad3740600276188f6
+                        - 6122bc5ad3740600276188f8
+                      name: amine
+                      email: amine@gmail.com
+                      phone: "213672055900"
+                      whatsapp: "213672055900"
+                    - _id: 6122bc5ad3740600276188f6
+                      roles:
+                        - ADMIN
+                      contacts:
+                        - 6122bc5ad3740600276188f4
+                        - 6122bc5ad3740600276188f7
+                        - 6122bc5ad3740600276188f5
+                        - 6122bc5ad3740600276188f6
+                        - 6122bc5ad3740600276188f8
+                      name: mohammed
+                      email: mohammed@gmail.com
+                      phone: "213672055900"
+                      whatsapp: "213672055900"
+                    - _id: 6122bc5ad3740600276188f8
+                      roles:
+                        - ADMIN
+                      contacts:
+                        - 6122bc5ad3740600276188f4
+                        - 6122bc5ad3740600276188f7
+                        - 6122bc5ad3740600276188f5
+                        - 6122bc5ad3740600276188f6
+                        - 6122bc5ad3740600276188f8
+                      name: ali
+                      email: ali@gmail.com
+                      phone: "213672055900"
+                      whatsapp: "213672055900"
+                  name: amine
+                  email: amine@gmail.com
+                  phone: "213672055900"
+                  whatsapp: "213672055900"
+
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+    post:
+      security:
+        - bearerAuth: []
+      summary: create new user
+      description: user creation is accpeted by users who has superadmin role only, and email is sent to the created user asking him to activate his account within 24 hours
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewUser"
+
+      responses:
+        "201":
+          description: User Created with success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Auth"
+
+        "400":
+          description: Please provide valid data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /users/password:
+    put:
+      security:
+        - bearerAuth: []
+      summary: change password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewCredentials"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              examples:
+                ok:
+                  value:
+                    { "code": 200, "message": "Password updated with success" }
+
+        "400":
+          description: please provide a username and password
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+    post:
+      summary: request change password
+      description: an email with unique token (valid for 24 hours) will be sent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: please provide valid email
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /users/password/reset:
+    post:
+      summary: reset password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                newPassword:
+                  type: string
+      responses:
+        "200":
+          description: OK
+
+        "400":
+          description: please provide valid email
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /notification/email:
+    post:
+      summary: send an email.
+      description: send an email.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/notification"
+            example:
+              to:
+                - 6122bc5ad3740600276188f4
+                - 6122bc5ad3740600276188f5
+              message: 1
+
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              examples:
+                authorized:
+                  value: { "code": "200" }
+
+        "400":
+          description: please provide a username and password
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: The user is not identified
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                unauthorized:
+                  value: { "code": 401, "message": "Unauthorized" }
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /notification/SMS:
+    post:
+      summary: send an SMS.
+      description: send an SMS.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/notification"
+            example:
+              to:
+                - 6122bc5ad3740600276188f4
+                - 6122bc5ad3740600276188f5
+              message: 1
+
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              examples:
+                authorized:
+                  value: { "code": "200" }
+
+        "400":
+          description: please provide a username and password
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: The user is not identified
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                unauthorized:
+                  value: { "code": 401, "message": "Unauthorized" }
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /notification/whatsapp:
+    post:
+      summary: send a whatsapp message.
+      description: send a whatsapp message.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/notification"
+            example:
+              to:
+                - 6122bc5ad3740600276188f4
+                - 6122bc5ad3740600276188f5
+              message: 1
+
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              examples:
+                authorized:
+                  value: { "code": "200" }
+
+        "400":
+          description: please provide a username and password
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: The user is not identified
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                unauthorized:
+                  value: { "code": 401, "message": "Unauthorized" }
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+components:
+  schemas:
+    notification:
+      description: nitification data
+      type: object
+      required:
+        - to
+        - message
+      properties:
+        to:
+          type: array
+          items:
+            type: string
+        message:
+          type: string
+          enum: ["1", "2", "3"]
+
+    Credentials:
+      description: login credentials
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+
+    NewCredentials:
+      description: reset password credentials
+      type: object
+      required:
+        - currentPassword
+        - newPassword
+      properties:
+        currentPassword:
+          type: string
+        newPassword:
+          type: string
+
+    Auth:
+      type: object
+      properties:
+        idToken:
+          type: string
+        idTokenTxpiresIn:
+          type: integer
+          description: exiration time in ms
+        timeStamp:
+          type: integer
+          description: generation timestamp
+
+    UserPayload:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        phone:
+          type: string
+        whatsapp:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+            enum:
+              [
+                "SUPERADMIN",
+                "ADMIN",
+                "SELLER",
+                "BUYER",
+                "TECHSUPPORT",
+                "DELIVERER",
+              ]
+
+    NewUser:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        phone:
+          type: string
+        whatsapp:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+            enum:
+              [
+                "SUPERADMIN",
+                "ADMIN",
+                "SELLER",
+                "BUYER",
+                "TECHSUPPORT",
+                "DELIVERER",
+              ]
+
+    # Schema for error response body
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          description: application error code reference
+        message:
+          type: string
+          description: error message description
+      required:
+        - code
+        - message
+
+    BasicResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: generally http status response code
+        message:
+          type: string
+          description: message description
+      required:
+        - code
+        - message
+
+  # Define the security scheme type (HTTP bearer)
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  responses:
+    Unauthorized:
+      description: Unauthorized - Access token is missing or invalid
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+
+    Forbidden:
+      description: Forbidden - You don’t have permission to access
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+
+    InternalError:
+      description: internal error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    NotFound:
+      description: ressource not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"

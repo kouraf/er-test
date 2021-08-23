@@ -1,0 +1,14 @@
+{
+  "validator": {
+    "to": "to field is required",
+    "to[]": "Invalid revceiver",
+    "message": "Message not found"
+  },
+  "generalErrors": {
+    "duplicate": "Duplicate key error",
+    "internal": "Internal server error",
+    "checkInputs": "Please check your inputs",
+    "noContent": "No content found",
+    "forbidden": "You can't do that, please contact your group admin"
+  }
+}

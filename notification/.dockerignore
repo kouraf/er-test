@@ -1,0 +1,10 @@
+.gitignore
+.env
+
+init.js
+
+.Dockerfile
+Readme.md
+
+node_modules
+npm_debug.log

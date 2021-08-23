@@ -1,0 +1,4 @@
+Hi %(receiver_name)s,
+
+I am %(sender_name)s this is a notification sample.
+

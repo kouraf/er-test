@@ -1,0 +1,14 @@
+{
+  "validator": {
+    "to": "Le(s) destinataire(s) est/sont requis",
+    "to[]": "destinataire invalide",
+    "message": "Message introuvable"
+  },
+  "generalErrors": {
+    "duplicate": "Erreur de clé en double",
+    "internal": "Erreur Interne du Serveur",
+    "checkInputs": "Veuillez vérifier vos entrées",
+    "noContent": "Auncun contenu trouvé",
+    "forbidden": "Vous ne pouvez pas effectuer cette operation contactez l'administrateur groupe"
+  }
+}

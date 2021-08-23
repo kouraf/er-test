@@ -1,0 +1,7 @@
+/user/node_modules/
+/notification/node_modules/
+
+.env
+
+/user/.env
+/notification/.env

@@ -1,0 +1,35 @@
+{
+  "validator": {
+    "password": "Le mot de passe est requis (longueur> 8)",
+    "email": "Email invalide",
+    "name": "Le nom est requis",
+    "roles": "Rôles non valides",
+    "newPassword": "newPassword est requis (longueur> 8)",
+    "currentPassword": "currentPassword est requis (longueur> 8)",
+    "token": "jeton invalide",
+    "status": "statut invalide",
+    "id": "ID invalide",
+    "languageCode": "langue non prise en charge",
+    "sessionId": "sessionId est requis",
+    "text": "le texte est requis",
+    "label": "Mots clés requis et <5",
+    "keywords": "étiquette obligatoire (longueur> 3)",
+    "from": "La plage de dates est requise",
+    "to": "La plage de dates est requise",
+    "interval": "La plage de dates est requise",
+    "severity": "gravité",
+    "page": "une page est requis",
+    "offset": "offset doit etre un nombre",
+    "limit": "limite doit etre un nombre",
+    "type": "type invalide",
+    "body": "corps de commentaire invalide",
+    "kind": "kind est invalide"
+  },
+  "generalErrors": {
+    "duplicate": "Erreur de clé en double",
+    "internal": "Erreur Interne du Serveur",
+    "checkInputs": "Veuillez vérifier vos entrées",
+    "noContent": "Auncun contenu trouvé",
+    "forbidden": "Vous ne pouvez pas effectuer cette operation contactez l'administrateur groupe"
+  }
+}

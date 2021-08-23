@@ -1,0 +1,1 @@
+Your sent an %(type)s to %(receiver_name)s,

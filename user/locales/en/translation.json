@@ -1,0 +1,35 @@
+{
+  "validator": {
+    "password": "Password is required (length > 8)",
+    "email": "Invalid email",
+    "name": "name is required",
+    "roles": "Invalid Roles",
+    "newPassword": "newPassword is required (length > 8)",
+    "currentPassword": "currentPassword is required (length > 8)",
+    "token": "invalid token",
+    "status": "invalid status",
+    "id": "invalid id",
+    "languageCode": "unsupported language",
+    "sessionId": "sessionId is required",
+    "text": "text is required",
+    "label": "Keywords required and < 5",
+    "keywords": "label is required (length > 3)",
+    "from": "Date Range is required",
+    "to": "Date Range is required",
+    "interval": "Date Range is required",
+    "severity": "severity",
+    "page": "page is required",
+    "offset": "offset must be a number",
+    "limit": "limit must be a number",
+    "type": "invalide type",
+    "body": "invalid comment body",
+    "kind": "kind must be a valid kind"
+  },
+  "generalErrors": {
+    "duplicate": "Duplicate key error",
+    "internal": "Internal server error",
+    "checkInputs": "Please check your inputs",
+    "noContent": "No content found",
+    "forbidden": "You can't do that, please contact your group admin"
+  }
+}
